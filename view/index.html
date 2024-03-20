@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+  <body>
+    <h1>This home page</h1>
+    <br />
+    <a href="./pages/blog.html">Go to blog page</a>
+    <br />
+    <br />
+    <form id="form">
+      <table>
+        <tr>
+          <td><label for="sid">SId</label></td>
+          <td><input type="text" name="sid" id="sid" /></td>
+        </tr>
+        <tr>
+          <td><label for="sname">SName</label></td>
+          <td><input type="text" name="sname" id="sname" /></td>
+        </tr>
+        <tr>
+          <td><label for="smobile">SMobile</label></td>
+          <td><input type="number" name="smobile" id="smobile" /></td>
+        </tr>
+        <tr>
+          <td><input type="submit" value="Register" /></td>
+        </tr>
+      </table>
+    </form>
+    <button id="get">Get students</button>
+    <!-- to read the form manually -->
+    <script>
+      let form = document.getElementById("form");
+      let userDetails = {};
+
+      form.addEventListener("input", (event) => {
+        let name = event.target.name;
+        let value = event.target.value;
+        userDetails[name] = value;
+      });
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        fetch("/newstudent", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(userDetails),
+        })
+          .then((res) => res.json())
+          .then((data) => console.log(data))
+          .catch((err) => console.log(err));
+      });
+
+      let getbtn = document.getElementById("get");
+      getbtn.addEventListener("click", () => {
+        fetch("/getstudents")
+          .then((res) => res.json())
+          .then((data) => console.log(data))
+          .catch((err) => console.log(err));
+      });
+    </script>
+  </body>
+</html>
